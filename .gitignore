@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+venv-gpu/
+.venv/
+*.egg
+.pytest_cache/
+output/
+*.zip
+!source_code.zip

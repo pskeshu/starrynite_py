@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68.0", "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "starrynite"
+version = "0.1.0"
+description = "Modern Python pipeline for nuclear detection, tracking, and lineaging in C. elegans embryos"
+readme = "README.md"
+license = { text = "GPL-3.0" }
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "scikit-image>=0.21",
+    "tifffile>=2023.1",
+    "dask[array]>=2023.1",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "click>=8.0",
+]
+
+[project.optional-dependencies]
+detection = [
+    "stardist>=0.9",
+    "tensorflow>=2.12",
+]
+tracking = [
+    "ultrack>=0.6",
+    "btrack>=0.6",
+]
+viz = [
+    "napari>=0.5",
+    "matplotlib>=3.7",
+]
+dev = [
+    "pytest>=7.0",
+    "matplotlib>=3.7",
+]
+all = [
+    "starrynite[detection,tracking,viz,dev]",
+]
+
+[project.scripts]
+starrynite = "starrynite.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["starrynite*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,48 @@
+# Configuration for NIH diSPIM deconvolved C. elegans dataset
+# Source: Moyle et al., Nature 591, 99-104 (2021)
+# Data: https://zenodo.org/record/6460375
+
+imaging:
+  xy_res: 0.1625       # microns per pixel (diSPIM typical)
+  z_res: 0.1625         # microns per Z-step (isotropic after deconvolution)
+  n_slices: 100         # approximate Z-slices per volume
+  n_channels: 1
+  nuclear_channel: 0
+  time_prefix: "_t"
+  time_digits: 3
+
+data:
+  input_dir: "D:/nih-ls/nih_diSPIM_deconv_1/images"
+  embryo_name: "nih_diSPIM_deconv_1"
+  output_dir: "C:/Users/christensenr/Documents/GitHub/starrynite-python/output/embryo1"
+  ground_truth_dir: "D:/nih-ls/nih_diSPIM_deconv_1/tracks/nuclei"
+  start_time: 0
+  end_time: null  # Process all timepoints
+
+stardist:
+  model_name: "3D_demo"
+  prob_thresh: 0.70     # Low threshold needed with pretrained model; fine-tune for better precision
+  nms_thresh: 0.3       # Default NMS threshold
+  scale: null           # Will use anisotropy from imaging config
+  n_tiles: null         # null=no tiling (faster on GPU with enough VRAM); use [2, 4, 4] for CPU/low VRAM
+  normalize: true
+  normalize_low: 1.0
+  normalize_high: 99.8
+
+ultrack:
+  min_area: 50
+  max_area: 5000
+  max_distance: 30.0
+  division_weight: -0.1
+  appear_weight: -0.5
+  disappear_weight: -0.5
+
+btrack:
+  max_search_radius: 30.0
+  motion_model: "constant_velocity"
+  hypothesis_model: "cell_hypothesis"
+  enable_divisions: true
+  optimization_method: "EXACT"
+  max_lost: 5
+
+tracker: "ultrack"
