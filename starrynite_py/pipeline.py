@@ -7,11 +7,11 @@ from pathlib import Path
 
 import numpy as np
 
-from starrynite.config.schema import PipelineConfig
-from starrynite.io.tiff_loader import discover_timepoints, load_timepoint
-from starrynite.detection.stardist_detect import detect_nuclei, DetectionResult
-from starrynite.tracking.adapter import TrackerResult
-from starrynite.io.acetree_export import export_acetree_zip
+from starrynite_py.config.schema import PipelineConfig
+from starrynite_py.io.tiff_loader import discover_timepoints, load_timepoint
+from starrynite_py.detection.stardist_detect import detect_nuclei, DetectionResult
+from starrynite_py.tracking.adapter import TrackerResult
+from starrynite_py.io.acetree_export import export_acetree_zip
 
 logger = logging.getLogger(__name__)
 
@@ -63,10 +63,10 @@ def run_tracking(
         TrackerResult with tracks and divisions.
     """
     if config.tracker == "ultrack":
-        from starrynite.tracking.ultrack_track import track_with_ultrack
+        from starrynite_py.tracking.ultrack_track import track_with_ultrack
         return track_with_ultrack(detections, config.ultrack, config.imaging)
     elif config.tracker == "btrack":
-        from starrynite.tracking.btrack_track import track_with_btrack
+        from starrynite_py.tracking.btrack_track import track_with_btrack
         return track_with_btrack(detections, config.btrack, config.imaging)
     else:
         raise ValueError(f"Unknown tracker: {config.tracker}")

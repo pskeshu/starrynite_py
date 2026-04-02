@@ -69,8 +69,8 @@ def prepare_training_data(
     Returns:
         Tuple of (images, masks) lists.
     """
-    from starrynite.io.tiff_loader import discover_timepoints, load_timepoint
-    from starrynite.io.ground_truth import load_ground_truth
+    from starrynite_py.io.tiff_loader import discover_timepoints, load_timepoint
+    from starrynite_py.io.ground_truth import load_ground_truth
 
     logger.info("Loading ground truth...")
     gt = load_ground_truth(nuclei_dir)

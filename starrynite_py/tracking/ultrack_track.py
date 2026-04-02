@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from starrynite.config.schema import UltrackConfig, ImagingConfig
-from starrynite.detection.stardist_detect import DetectionResult
+from starrynite_py.config.schema import UltrackConfig, ImagingConfig
+from starrynite_py.detection.stardist_detect import DetectionResult
 from .adapter import TrackerResult, TrackNode
 
 
@@ -25,7 +25,7 @@ def track_with_ultrack(
         TrackerResult with tracks and division events.
     """
     from ultrack import MainConfig, track, to_tracks_layer
-    from ultrack.utils.array import labels_to_contours
+    from ultrack.utils import labels_to_contours
 
     # Build ultrack config
     cfg = MainConfig()
@@ -40,15 +40,15 @@ def track_with_ultrack(
     sorted_times = sorted(detections.keys())
     label_stack = np.stack([detections[t].labels for t in sorted_times], axis=0)
 
-    # Convert instance labels to detection/edge contour maps
+    # Convert instance labels to foreground/edge contour maps
     detection_map, edge_map = labels_to_contours(label_stack)
 
     # Run ultrack pipeline
     track(
         cfg,
-        detection=detection_map,
+        foreground=detection_map,
         edges=edge_map,
-        scale=(imaging_config.anisotropy, 1.0, 1.0),
+        overwrite=True,
     )
 
     # Extract results
@@ -64,14 +64,13 @@ def track_with_ultrack(
             track_id=int(row["track_id"]),
             timepoint=t,
             position=np.array([row["x"], row["y"], row["z"]]),
-            diameter=0.0,  # Will be filled from detection data
+            diameter=0.0,
             parent_track_id=int(row.get("parent_track_id", -1)),
         )
 
         # Look up diameter from detection
         if t in detections:
             det = detections[t]
-            # Find nearest centroid
             if len(det.centroids) > 0:
                 dists = np.linalg.norm(det.centroids - node.position, axis=1)
                 nearest = np.argmin(dists)

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from starrynite.config.schema import StarDistConfig, ImagingConfig
+from starrynite_py.config.schema import StarDistConfig, ImagingConfig
 
 
 @dataclass

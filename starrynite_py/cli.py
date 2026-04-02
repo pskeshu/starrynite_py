@@ -24,8 +24,8 @@ def main(verbose: bool) -> None:
 @click.option("--config", "-c", required=True, type=click.Path(exists=True), help="YAML config file.")
 def detect(config: str) -> None:
     """Run nuclear detection only."""
-    from starrynite.config import load_config
-    from starrynite.pipeline import run_detection
+    from starrynite_py.config import load_config
+    from starrynite_py.pipeline import run_detection
 
     cfg = load_config(config)
     detections = run_detection(cfg)
@@ -38,8 +38,8 @@ def detect(config: str) -> None:
 @click.option("--config", "-c", required=True, type=click.Path(exists=True), help="YAML config file.")
 def run(config: str) -> None:
     """Run the full pipeline: detect -> track -> export."""
-    from starrynite.config import load_config
-    from starrynite.pipeline import run_pipeline
+    from starrynite_py.config import load_config
+    from starrynite_py.pipeline import run_pipeline
 
     cfg = load_config(config)
     detections, tracking, export_path = run_pipeline(cfg)
@@ -50,10 +50,10 @@ def run(config: str) -> None:
 @click.option("--config", "-c", required=True, type=click.Path(exists=True), help="YAML config file.")
 def evaluate(config: str) -> None:
     """Evaluate detection/tracking against ground truth."""
-    from starrynite.config import load_config
-    from starrynite.io.ground_truth import load_ground_truth
-    from starrynite.pipeline import run_detection
-    from starrynite.evaluation.detection_eval import evaluate_detection, summarize_detection_metrics
+    from starrynite_py.config import load_config
+    from starrynite_py.io.ground_truth import load_ground_truth
+    from starrynite_py.pipeline import run_detection
+    from starrynite_py.evaluation.detection_eval import evaluate_detection, summarize_detection_metrics
 
     cfg = load_config(config)
 

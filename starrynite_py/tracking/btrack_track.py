@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from starrynite.config.schema import BtrackConfig, ImagingConfig
-from starrynite.detection.stardist_detect import DetectionResult
+from starrynite_py.config.schema import BtrackConfig, ImagingConfig
+from starrynite_py.detection.stardist_detect import DetectionResult
 from .adapter import TrackerResult, TrackNode
 
 

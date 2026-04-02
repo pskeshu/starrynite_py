@@ -6,16 +6,16 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from starrynite.io.tiff_loader import discover_timepoints, load_timepoint
-from starrynite.io.ground_truth import (
+from starrynite_py.io.tiff_loader import discover_timepoints, load_timepoint
+from starrynite_py.io.ground_truth import (
     load_ground_truth,
     read_nuclei_file,
     discover_nuclei_files,
     parse_nuclei_line,
 )
-from starrynite.io.nuclei_io import write_nuclei_file, read_nuclei_positions
-from starrynite.io.acetree_export import export_acetree_zip
-from starrynite.config import load_config
+from starrynite_py.io.nuclei_io import write_nuclei_file, read_nuclei_positions
+from starrynite_py.io.acetree_export import export_acetree_zip
+from starrynite_py.config import load_config
 
 
 class TestGroundTruthParsing:

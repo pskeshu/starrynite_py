@@ -6,9 +6,9 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from starrynite.io.ground_truth import GroundTruthTimepoint
-from starrynite.detection.stardist_detect import DetectionResult
-from starrynite.utils.distance import match_detections
+from starrynite_py.io.ground_truth import GroundTruthTimepoint
+from starrynite_py.detection.stardist_detect import DetectionResult
+from starrynite_py.utils.distance import match_detections
 
 
 @dataclass

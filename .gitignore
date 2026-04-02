@@ -10,5 +10,10 @@ venv-gpu/
 *.egg
 .pytest_cache/
 output/
+data.db
+metadata.toml
+*.npy
+*.pkl
+*.lock
 *.zip
 !source_code.zip
