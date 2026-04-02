@@ -21,8 +21,8 @@ data:
 
 stardist:
   model_name: "3D_demo"
-  prob_thresh: 0.70     # Low threshold needed with pretrained model; fine-tune for better precision
-  nms_thresh: 0.3       # Default NMS threshold
+  prob_thresh: 0.657    # Optimized on GT validation data (embryo 1, late stages)
+  nms_thresh: 0.3       # Optimized: default was already best
   scale: null           # Will use anisotropy from imaging config
   n_tiles: null         # null=no tiling (faster on GPU with enough VRAM); use [2, 4, 4] for CPU/low VRAM
   normalize: true
