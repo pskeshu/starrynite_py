@@ -1,4 +1,11 @@
-"""Fine-tune StarDist 3D on ground truth data."""
+"""Fine-tune StarDist 3D on ground truth data.
+
+NOTE: Fine-tuning with simple spherical masks from GT centroids/diameters
+gives poor results because the masks don't match real nuclear morphology.
+Better approach: use the pretrained model's predictions as initial masks,
+then refine using GT centroids to correct the labels before training.
+This module implements both approaches.
+"""
 
 from __future__ import annotations
 
