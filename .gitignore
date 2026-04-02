@@ -17,3 +17,4 @@ metadata.toml
 *.lock
 *.zip
 !source_code.zip
+models/
