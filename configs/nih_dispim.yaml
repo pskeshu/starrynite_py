@@ -19,6 +19,17 @@ data:
   start_time: 0
   end_time: null  # Process all timepoints
 
+# Detection: Cellpose outperforms StarDist on this data (F1=0.98 vs 0.78 at t200)
+# Use detector: "cellpose" or "stardist"
+detector: "cellpose"
+
+cellpose:
+  do_3D: true
+  diameter: null        # Auto-detect
+  anisotropy: null      # Use imaging config anisotropy
+  cellprob_threshold: 0.0
+  flow_threshold: 0.4
+
 stardist:
   model_name: "3D_demo"
   prob_thresh: 0.657    # Optimized on GT validation data (embryo 1, late stages)
@@ -33,7 +44,7 @@ ultrack:
   min_area: 50
   max_area: 5000
   max_distance: 30.0
-  division_weight: -0.1
+  division_weight: -0.001   # Near zero to allow divisions (was -0.1, too restrictive)
   appear_weight: -0.5
   disappear_weight: -0.5
 

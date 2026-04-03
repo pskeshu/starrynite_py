@@ -9,15 +9,38 @@ import numpy as np
 
 from starrynite_py.config.schema import PipelineConfig
 from starrynite_py.io.tiff_loader import discover_timepoints, load_timepoint
-from starrynite_py.detection.stardist_detect import detect_nuclei, DetectionResult
+from starrynite_py.detection.stardist_detect import DetectionResult
 from starrynite_py.tracking.adapter import TrackerResult
 from starrynite_py.io.acetree_export import export_acetree_zip
 
 logger = logging.getLogger(__name__)
 
 
+def _detect_single_volume(volume, config: PipelineConfig) -> DetectionResult:
+    """Run detection on a single volume using configured detector."""
+    if config.detector == "cellpose":
+        from starrynite_py.detection.cellpose_detect import detect_nuclei_cellpose
+        result = detect_nuclei_cellpose(
+            volume, config.imaging,
+            diameter=config.cellpose.diameter,
+            cellprob_threshold=config.cellpose.cellprob_threshold,
+            flow_threshold=config.cellpose.flow_threshold,
+            do_3D=config.cellpose.do_3D,
+            anisotropy=config.cellpose.anisotropy,
+        )
+        # Convert CellposeResult to DetectionResult for pipeline compatibility
+        return DetectionResult(
+            labels=result.labels,
+            centroids=result.centroids,
+            diameters=result.diameters,
+        )
+    else:
+        from starrynite_py.detection.stardist_detect import detect_nuclei
+        return detect_nuclei(volume, config.stardist, config.imaging)
+
+
 def run_detection(config: PipelineConfig) -> dict[int, DetectionResult]:
-    """Run StarDist detection on all timepoints.
+    """Run detection on all timepoints using configured detector.
 
     Args:
         config: Pipeline configuration.
@@ -38,13 +61,13 @@ def run_detection(config: PipelineConfig) -> dict[int, DetectionResult]:
     else:
         timepoints = [(t, p) for t, p in timepoints if t >= start]
 
-    logger.info(f"Detecting nuclei in {len(timepoints)} timepoints...")
+    logger.info(f"Detecting nuclei in {len(timepoints)} timepoints ({config.detector})...")
 
     results = {}
     for i, (t, path) in enumerate(timepoints):
         logger.info(f"  [{i + 1}/{len(timepoints)}] t={t:03d}")
         volume = load_timepoint(path)
-        results[t] = detect_nuclei(volume, config.stardist, config.imaging)
+        results[t] = _detect_single_volume(volume, config)
 
     return results
 

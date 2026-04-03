@@ -76,11 +76,23 @@ class DataConfig(BaseModel):
     end_time: int | None = Field(default=None, description="Last timepoint (None=all available)")
 
 
+class CellposeConfig(BaseModel):
+    """Cellpose 3D detection parameters."""
+
+    do_3D: bool = Field(default=True, description="Use 3D segmentation")
+    diameter: float | None = Field(default=None, description="Expected nucleus diameter (None=auto)")
+    anisotropy: float | None = Field(default=None, description="Z/XY anisotropy (None=from imaging config)")
+    cellprob_threshold: float = Field(default=0.0, description="Cell probability threshold (-6 to 6)")
+    flow_threshold: float = Field(default=0.4, description="Flow error threshold")
+
+
 class PipelineConfig(BaseModel):
     """Top-level pipeline configuration."""
 
     imaging: ImagingConfig
     data: DataConfig
+    detector: Literal["cellpose", "stardist"] = Field(default="cellpose", description="Which detector to use")
+    cellpose: CellposeConfig = Field(default_factory=CellposeConfig)
     stardist: StarDistConfig = Field(default_factory=StarDistConfig)
     ultrack: UltrackConfig = Field(default_factory=UltrackConfig)
     btrack: BtrackConfig = Field(default_factory=BtrackConfig)
