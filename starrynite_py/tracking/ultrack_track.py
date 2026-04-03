@@ -79,8 +79,14 @@ def track_with_ultrack(
         result.nodes.append(node)
 
     # Extract division events from graph
+    # ultrack graph format: {child_track_id: parent_track_id} (child→parent)
     if graph is not None:
-        for parent_id, children in graph.items():
+        # Invert to parent → [children]
+        parent_to_children: dict[int, list[int]] = {}
+        for child_id, parent_id in graph.items():
+            parent_to_children.setdefault(parent_id, []).append(child_id)
+
+        for parent_id, children in parent_to_children.items():
             if len(children) == 2:
                 parent_nodes = result.get_track(parent_id)
                 if parent_nodes:
